@@ -31,4 +31,5 @@ def gravity(object):
 
 
 def check_collision(object1, object2):
-    if (object1.colliderect(object2))
+    if (object1.colliderect(object2)):
+        print("Collided")
