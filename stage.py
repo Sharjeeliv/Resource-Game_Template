@@ -33,9 +33,9 @@ def key_manager():
     if keys[K_ESCAPE]:
         running = False
     if keys[K_LEFT]:
-        player.move_left()
+        player.accel_left()
     if keys[K_RIGHT]:
-        player.move_right()
+        player.accel_right()
 
 
 def run():
@@ -45,6 +45,7 @@ def run():
         mb = mouse.get_pressed()
         screen.fill(base_colour)
         set_stage()
+        player.move_player()
 
         pygame.time.delay(10)
         display.flip()
