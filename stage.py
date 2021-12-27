@@ -41,6 +41,9 @@ class Stage:
             self.player.accel_left()
         if keys[K_RIGHT]:
             self.player.accel_right()
+        if keys[K_UP]:
+            self.player.jump(self.floor())
+
 
     def player_manager(self):
         self.player.move_player()
