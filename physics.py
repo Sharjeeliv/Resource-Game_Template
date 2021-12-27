@@ -1,6 +1,3 @@
-import pygame
-
-
 # This class is primarily for utility and convenience for working with cords and points
 class Pair:
     x, y = None, None
@@ -26,10 +23,6 @@ def jump(object):
     pass
 
 
-def gravity(object):
-    pass
-
-
-def check_collision(object1, object2):
+def gravity(object1, object2):
     if object1.colliderect(object2):
-        print("Collided")
+        pass

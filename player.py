@@ -1,11 +1,13 @@
 import physics
-from physics import *
+from colours import *
+from pygame import draw
 
 
 class Player:
-    pos = Pair(0, 0)
-    LENGTH, WIDTH, TERM_VELOCITY = 0, 0, 10
-    velocity = 0
+    pos = physics.Pair(0, 0)
+    LENGTH, WIDTH, TERM_VELOCITY_X, RATE, TERM_VELOCITY_Y = 0, 0, 10, 1, 20
+    velocity_x, velocity_y = 0, 0
+    player_object = None
 
     def __init__(self, x, y, length, width):
         self.pos.x = x
@@ -20,16 +22,31 @@ class Player:
         return self.pos
 
     def accel_right(self):
-        #if abs(self.velocity <= self.TERM_VELOCITY):
-        self.velocity += 1
+        if self.velocity_x < self.TERM_VELOCITY_X:
+            self.velocity_x += self.RATE
 
     def accel_left(self):
-        #if abs(self.velocity <= self.TERM_VELOCITY):
-        self.velocity -= 1
+        if self.velocity_x > -self.TERM_VELOCITY_X:
+            self.velocity_x -= self.RATE
+
+    def velocity_decay(self):
+        if self.velocity_x > 0:
+            self.velocity_x -= self.RATE / 2
+        elif self.velocity_x < 0:
+            self.velocity_x += self.RATE / 2
 
     def move_player(self):
-        if self.TERM_VELOCITY >= self.velocity >= -self.TERM_VELOCITY:
-            self.pos.x += self.velocity
+        self.pos.x += self.velocity_x
+        self.velocity_decay()
 
-    def jump(self):
-        physics.jump(self)
+    def fall(self, object2):
+        if self.player_object.colliderect(object2):
+            self.pos.y -= self.velocity_y
+            self.velocity_y = 0
+        elif self.velocity_y < self.TERM_VELOCITY_Y:
+            self.velocity_y += self.RATE
+
+        self.pos.y += self.velocity_y
+
+    def draw_player(self, screen):
+        self.player_object = draw.rect(screen, ORANGE, self.object())

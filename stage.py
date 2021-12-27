@@ -1,26 +1,27 @@
 import pygame
-from colours import *
 from pygame import *
 from physics import *
 from player import *
 
-global screen, running, player, res
+global screen, running, player, window, floor
 
 
 def __init__():
-    global screen, running, player, res
-
+    global screen, running, player, window, floor
     pygame.display.set_caption('Game')
-    res = Pair(512, 512)
-    screen = display.set_mode(res.pair())
+    window = Pair(512, 512)
+    screen = display.set_mode(window.pair())
     pygame.display.flip()
     running = True
     player = Player(100, 20, 50, 50)
+    floor = draw.rect(screen, BROWN, (0, window.top_offset(20), 512, 20))
 
 
 def set_stage():
-    floor = draw.rect(screen, brown, (0, res.top_offset(20), 512, 20))
-    draw.rect(screen, red, player.object())
+    screen.fill(BASE)
+    draw.rect(screen, BROWN, (0, window.top_offset(20), 512, 20))
+    player.draw_player(screen)
+    # draw.rect(screen, ORANGE, player.object())
 
 
 def key_manager():
@@ -38,15 +39,19 @@ def key_manager():
         player.accel_right()
 
 
+def player_manager():
+    player.move_player()
+    player.fall(floor)
+
+
 def run():
     while running:
         key_manager()
         mx, my = mouse.get_pos()
         mb = mouse.get_pressed()
-        screen.fill(base_colour)
         set_stage()
-        player.move_player()
+        player_manager()
 
-        pygame.time.delay(10)
+        pygame.time.delay(16)
         display.flip()
     quit()
