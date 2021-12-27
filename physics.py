@@ -6,6 +6,7 @@ class Pair:
         self.x = x
         self.y = y
 
+    # Used for creating a rect object
     def top_offset(self, y):
         return self.y - y
 
@@ -17,12 +18,3 @@ class Pair:
 
     def pair(self):
         return self.x, self.y
-
-
-def jump(object):
-    pass
-
-
-def gravity(object1, object2):
-    if object1.colliderect(object2):
-        pass

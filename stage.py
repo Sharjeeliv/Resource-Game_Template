@@ -1,57 +1,57 @@
 import pygame
 from pygame import *
-from physics import *
 from player import *
 
-global screen, running, player, window, floor
 
+class Stage:
+    mouse_x, mouse_y, mouse_b = None, None, None
 
-def __init__():
-    global screen, running, player, window, floor
-    pygame.display.set_caption('Game')
-    window = Pair(512, 512)
-    screen = display.set_mode(window.pair())
-    pygame.display.flip()
-    running = True
-    player = Player(100, 20, 50, 50)
-    floor = draw.rect(screen, BROWN, (0, window.top_offset(20), 512, 20))
+    def __init__(self):
+        # Initialize display window
+        pygame.display.set_caption('Game')
+        self.window = Pair(512, 512)
+        self.screen = display.set_mode(self.window.pair())
+        pygame.display.flip()
 
+        self.running = True
+        self.player = Player(100, 20, 50, 50)
 
-def set_stage():
-    screen.fill(BASE)
-    draw.rect(screen, BROWN, (0, window.top_offset(20), 512, 20))
-    player.draw_player(screen)
-    # draw.rect(screen, ORANGE, player.object())
+    def floor(self):
+        return draw.rect(self.screen, BROWN, (0, self.window.top_offset(20), 512, 20))
 
+    def set_stage(self):
+        self.screen.fill(BASE)
+        draw.rect(self.screen, BROWN, (0, self.window.top_offset(20), 512, 20))
+        self.player.draw_player(self.screen)
+        self.floor()
 
-def key_manager():
-    global running
-    for e in event.get():
-        if e.type == QUIT:
-            running = False
+    def event_manager(self):
+        # Mouse events
+        mouse_x, mouse_y = mouse.get_pos()
+        mouse_b = mouse.get_pressed()
 
-    keys = key.get_pressed()
-    if keys[K_ESCAPE]:
-        running = False
-    if keys[K_LEFT]:
-        player.accel_left()
-    if keys[K_RIGHT]:
-        player.accel_right()
+        # Interrupt & key events
+        for e in event.get():
+            if e.type == QUIT:
+                self.running = False
+        keys = key.get_pressed()
+        if keys[K_ESCAPE]:
+            self.running = False
+        if keys[K_LEFT]:
+            self.player.accel_left()
+        if keys[K_RIGHT]:
+            self.player.accel_right()
 
+    def player_manager(self):
+        self.player.move_player()
+        self.player.fall(self.floor())
 
-def player_manager():
-    player.move_player()
-    player.fall(floor)
+    def run(self):
+        while self.running:
+            self.event_manager()
+            self.set_stage()
+            self.player_manager()
 
-
-def run():
-    while running:
-        key_manager()
-        mx, my = mouse.get_pos()
-        mb = mouse.get_pressed()
-        set_stage()
-        player_manager()
-
-        pygame.time.delay(16)
-        display.flip()
-    quit()
+            pygame.time.delay(16)
+            display.flip()
+        quit()

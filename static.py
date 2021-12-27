@@ -1,0 +1,9 @@
+# Colours
+BASE = (150, 200, 225)
+BROWN = (100, 100, 50)
+ORANGE = (200, 100, 50)
+
+# Kinematic Constants
+RATE = 1
+TERM_VELOCITY_X = 10
+TERM_VELOCITY_Y = 10

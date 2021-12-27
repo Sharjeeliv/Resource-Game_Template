@@ -1,5 +1,5 @@
-import stage
+from stage import Stage
 
 if __name__ == '__main__':
-    stage.__init__()
-    stage.run()
+    game = Stage()
+    game.run()
